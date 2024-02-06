@@ -1,0 +1,30 @@
+version: 2.1
+jobs:
+  test-java:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: mvn -B -DskipTests clean package
+      - run:
+          name: Run tests
+          command: mvn test
+      - save_cache:
+          key: v1-dependencies-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+          paths:
+            - ~/.m2
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test-java
+      - deploy:
+          requires:
+            - test-java
+          filters:
+            branches:
+              only:
+                - master
