@@ -20,10 +20,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - test-java
-      - deploy:
-          requires:
-            - test-java
+      - test-java:
           filters:
             branches:
               only:
