@@ -13,7 +13,9 @@ jobs:
       - run:
           name: Run tests1
           command: mvn test
-      - codecov/upload
+      - run:
+          name: upload-to-codecov
+          command: bash <(curl -s https://codecov.io/bash)
       - save_cache:
           key: v1-dependencies-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
@@ -30,5 +32,4 @@ workflows:
                 - master
   upload-to-codecov:
     jobs:
-      - codecov/upload:
-          token: be05f913-1062-47e9-9166-abe5172bbe7c
+      - test-java
