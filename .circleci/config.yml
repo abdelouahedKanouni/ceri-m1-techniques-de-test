@@ -11,7 +11,7 @@ jobs:
           name: Build
           command: mvn -B -DskipTests clean package
       - run:
-          name: Run tests
+          name: Run tests1
           command: mvn test
       - codecov/upload
       - save_cache:
