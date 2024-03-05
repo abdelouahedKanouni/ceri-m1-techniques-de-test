@@ -13,7 +13,10 @@ jobs:
       - run:
           name: Run tests1
           command: mvn test
-      - codecov/upload
+      - codecov/upload:
+          token: ${{ secrets.be05f913-1062-47e9-9166-abe5172bbe7c }} # Utilisez le jeton de votre repository
+          file: ./target/site/jacoco/jacoco.xml # Chemin vers le rapport de couverture, ajustez si nécessaire
+          flags: junit # Spécifiez les drapeaux pour indiquer le format du rapport, ajustez si nécessaire
       - save_cache:
           key: v1-dependencies-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
