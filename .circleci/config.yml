@@ -13,8 +13,11 @@ jobs:
           name: Run tests
           command: mvn test
 
-      - checkout
-      - codecov/upload
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: abdelouahedKanouni/ceri-m1-techniques-de-test
       - save_cache:
           key: v1-dependencies-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
