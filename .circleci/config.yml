@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  codecov: codecov/codecov@4.0.1
 jobs:
   test-java:
     docker:
@@ -11,6 +13,9 @@ jobs:
       - run:
           name: Run tests
           command: mvn test
+
+      - checkout
+      - codecov/upload
       - save_cache:
           key: v1-dependencies-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
