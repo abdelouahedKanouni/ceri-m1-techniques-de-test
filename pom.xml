@@ -7,6 +7,10 @@
     <groupId>com.abdelouahed</groupId>
     <artifactId>TP1</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
     <name>TP1:Fork them all</name>
     <url>https://univ-avignon.fr/</url>
 
@@ -23,13 +27,14 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.10.0</version>
+            <version>3.11.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <!-- Configuration des cycles de vie -->
     <build>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
         <plugins>
             <!-- Plugin Maven pour compiler le code -->
             <plugin>
@@ -40,6 +45,14 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
