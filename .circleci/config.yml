@@ -16,6 +16,9 @@ jobs:
       - run:
           name: upload-to-codecov
           command: bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: Generate coverage report
+          command: mvn jacoco:report
       - save_cache:
           key: v1-dependencies-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
