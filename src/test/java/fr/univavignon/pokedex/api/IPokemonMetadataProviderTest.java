@@ -1,34 +1,36 @@
 package fr.univavignon.pokedex.api;
 
-import org.junit.Before;
+
 import org.junit.Test;
-import org.mockito.Mockito;
+
 import static org.junit.Assert.assertEquals;
 
 public class IPokemonMetadataProviderTest {
+    private IPokemonMetadataProvider iPokemonMetadataProvider;
 
-    private IPokemonMetadataProvider pokemonMetadataProvider;
 
-    @Before
-    public void setUp() throws PokedexException {
-        // Création d'un mock pour l'objet cible
-        pokemonMetadataProvider = Mockito.mock(IPokemonMetadataProvider.class);
-        // Configuration du comportement du mock pour retourner les métadonnées de Bulbizarre
-        Mockito.when(pokemonMetadataProvider.getPokemonMetadata(0))
-                .thenReturn(new PokemonMetadata(0, "Bulbizarre", 126, 126, 90));
+    public void setUp() {
+        // Création d'une instance réelle de PokemonMetadataProviderImpl
+        this.iPokemonMetadataProvider = new PokemonMetadataProvider();
     }
 
     @Test
-    public void testGetPokemonMetadata() throws PokedexException {
-
-        // Appel de la méthode à tester pour obtenir les métadonnées de Bulbizarre
-        PokemonMetadata metadata = pokemonMetadataProvider.getPokemonMetadata(0);
-
-        // Vérification du résultat
-        assertEquals(0, metadata.getIndex());
-        assertEquals("Bulbizarre", metadata.getName());
-        assertEquals(126, metadata.getAttack());
-        assertEquals(126, metadata.getDefense());
-        assertEquals(90, metadata.getStamina());
+    public void getPokemonMetadataBulbasaurTest() throws PokedexException {
+        // Vérification des informations récupérées pour Bulbizarre
+        PokemonMetadata pokemonMetadata = this.iPokemonMetadataProvider.getPokemonMetadata(0);
+        assertEquals("Bulbasaur", pokemonMetadata.getName());
+        assertEquals(126, pokemonMetadata.getAttack());
+        assertEquals(126, pokemonMetadata.getDefense());
+        assertEquals(90, pokemonMetadata.getStamina());
     }
+
+    @Test
+    public void getPokemonMetadataPikachuTest() throws PokedexException {
+        PokemonMetadata pokemonMetadata = this.iPokemonMetadataProvider.getPokemonMetadata(25);
+        assertEquals("Pikachu", pokemonMetadata.getName());
+        assertEquals(112, pokemonMetadata.getAttack());
+        assertEquals(101, pokemonMetadata.getDefense());
+        assertEquals(70, pokemonMetadata.getStamina());
+    }
+
 }

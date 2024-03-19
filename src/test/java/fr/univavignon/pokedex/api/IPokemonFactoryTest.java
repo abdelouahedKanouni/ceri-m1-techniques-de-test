@@ -1,48 +1,33 @@
 package fr.univavignon.pokedex.api;
 
-import org.junit.Before;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class IPokemonFactoryTest {
 
-    private IPokemonFactory pokemonFactory;
+    private IPokemonFactory iPokemonFactory;
 
-    @Before
+
     public void setUp() {
-        // Créer un mock pour IPokemonFactory
-        pokemonFactory = mock(IPokemonFactory.class);
+        // Création d'un mock pour PokemonMetadataProvider
+        this.iPokemonFactory = new PokemonFactory();
     }
 
+    // Test la création d'un pokemon avec les bonnes valeurs
     @Test
-    public void testCreatePokemon() {
-        // Index, CP, HP, Dust et Candy pour un Pokémon Bulbizarre
-        int expectedIndex = 0;
-        int expectedCp = 613;
-        int expectedHp = 64;
-        int expectedDust = 4000;
-        int expectedCandy = 4;
+    public void createPokemonTest() throws PokedexException {
+        // Utilisation du mock dans la création du Pokemon
+        Pokemon pokemon = this.iPokemonFactory.createPokemon(0, 613, 64,
+                4000, 4);
 
-        // Créer un Pokémon Bulbizarre simulé
-        Pokemon expectedPokemon = new Pokemon(expectedIndex, "Bulbizarre", 45, 49, 49, expectedCp, expectedHp, expectedDust, expectedCandy, 0.56);
+        // Vérification des valeurs récupérées
+        assertEquals(0, pokemon.getIndex());
+        assertEquals(613, pokemon.getCp());
+        assertEquals(64, pokemon.getHp());
+        assertEquals(4000, pokemon.getDust());
+        assertEquals(4, pokemon.getCandy());
 
-        // Configurer le mock pour retourner le Pokémon simulé
-        when(pokemonFactory.createPokemon(expectedIndex, expectedCp, expectedHp, expectedDust, expectedCandy))
-                .thenReturn(expectedPokemon);
-
-        // Appel de la méthode à tester
-        Pokemon actualPokemon = pokemonFactory.createPokemon(expectedIndex, expectedCp, expectedHp, expectedDust, expectedCandy);
-
-        // Vérification du résultat
-        assertNotNull(actualPokemon);
-        assertEquals(expectedIndex, actualPokemon.getIndex());
-        assertEquals(expectedCp, actualPokemon.getCp());
-        assertEquals(expectedHp, actualPokemon.getHp());
-        assertEquals(expectedDust, actualPokemon.getDust());
-        assertEquals(expectedCandy, actualPokemon.getCandy());
     }
 }
