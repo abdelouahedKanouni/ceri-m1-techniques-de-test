@@ -35,11 +35,11 @@ public class IPokedexTest {
 
     @Test
     public void testAddPokemon() {
-        Pokemon pokemon = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56);
-        int index = pokedex.addPokemon(pokemon);
-        assertEquals(index, pokemon.getIndex());
+        for (Pokemon pokemon : pokemonList) {
+            pokedex.addPokemon(pokemon);
+        }
+        assertEquals(2, pokedex.size());
     }
-
     @Test
     public void testGetPokemon() throws PokedexException {
         for (Pokemon pokemon : pokemonList) {
