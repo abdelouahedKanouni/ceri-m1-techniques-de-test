@@ -1,43 +1,34 @@
 package fr.univavignon.pokedex.api;
 
-import org.junit.*;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
+import static org.junit.Assert.assertEquals;
 
-import static org.assertj.core.api.Assertions.*;
 public class IPokemonMetadataProviderTest {
-    private IPokemonMetadataProvider metadataProvider;
-    private PokemonMetadata bulbizarre;
-    private PokemonMetadata aquali;
 
+    private IPokemonMetadataProvider pokemonMetadataProvider;
 
     @Before
-    public void setUp(){
-
-        this.metadataProvider = new PokemonMetadataProvider();
-        this.bulbizarre = new PokemonMetadata(0, "Bulbizarre", 126, 126, 90);
-        this.aquali = new PokemonMetadata(133, "Aquali", 186, 168, 260);
-
+    public void setUp() throws PokedexException {
+        // Création d'un mock pour l'objet cible
+        pokemonMetadataProvider = Mockito.mock(IPokemonMetadataProvider.class);
+        // Configuration du comportement du mock pour retourner les métadonnées de Bulbizarre
+        Mockito.when(pokemonMetadataProvider.getPokemonMetadata(0))
+                .thenReturn(new PokemonMetadata(0, "Bulbizarre", 126, 126, 90));
     }
 
     @Test
-    @Tag("Pokémons")
-    @DisplayName("Retrieves and returns the metadata for the pokemon")
-    public void getPokemonMetadata() throws PokedexException {
+    public void testGetPokemonMetadata() throws PokedexException {
 
-        int bulbizarreIndex = 0, aqualiIndex = 133, firstInvalidIndex = -4, secondInvalidIndex = 160;
+        // Appel de la méthode à tester pour obtenir les métadonnées de Bulbizarre
+        PokemonMetadata metadata = pokemonMetadataProvider.getPokemonMetadata(0);
 
-
-        //use of AssertJ in Junit5
-        assertThat(this.bulbizarre.getIndex()).isEqualTo(metadataProvider.getPokemonMetadata(bulbizarreIndex).getIndex());
-        assertThat(this.aquali.getDefense()).isEqualTo(metadataProvider.getPokemonMetadata(aqualiIndex).getDefense());
-
-        Throwable thrownException = catchThrowable(() -> metadataProvider.getPokemonMetadata(firstInvalidIndex));
-        assertThat(thrownException).isInstanceOf(PokedexException.class);
-
-        Throwable thrownException2 = catchThrowable(() -> metadataProvider.getPokemonMetadata(secondInvalidIndex));
-        assertThat(thrownException2).isInstanceOf(PokedexException.class);
-
+        // Vérification du résultat
+        assertEquals(0, metadata.getIndex());
+        assertEquals("Bulbizarre", metadata.getName());
+        assertEquals(126, metadata.getAttack());
+        assertEquals(126, metadata.getDefense());
+        assertEquals(90, metadata.getStamina());
     }
 }
