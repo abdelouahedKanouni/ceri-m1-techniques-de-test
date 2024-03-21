@@ -1,51 +1,42 @@
 package fr.univavignon.pokedex.api;
 
+import org.junit.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.mockito.Mockito;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IPokemonTrainerFactoryTest {
 
+    private IPokemonTrainerFactory pokemonTrainerFactory;
 
-    IPokemonTrainerFactory pokemonTrainerFactory = mock(IPokemonTrainerFactory.class);
-    IPokedexFactory pokedexFactory = mock(IPokedexFactory.class);
-    IPokedex pokedex = mock(IPokedex.class);
-    Pokemon pokemon =new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56);
 
     @Before
-    public void init() {
-
-        when(pokemonTrainerFactory.createTrainer(
-                anyString(), any(), any()
-        )).thenAnswer(new Answer<PokemonTrainer>() {
-            public PokemonTrainer answer(InvocationOnMock invocation) {
-                Object[] args = invocation.getArguments();
-                String name = (String) args[0];
-                Team team = (Team) args[1];
-                when(pokedex.size()).thenReturn(0);
-                return new PokemonTrainer(name, team, pokedex);
-            }
-        });
+    public void setUp(){
+        this.pokemonTrainerFactory = Mockito.mock(IPokemonTrainerFactory.class);
     }
 
-
     @Test
-    public void creationPokemonTrainerTest() throws PokedexException {
+    @Tag("PokemonTrainer")
+    @DisplayName("Creates and returns a PokemonTrainer instance")
+    public void canCreateTrainer(){
 
-        PokemonTrainer pokemonTrainer = pokemonTrainerFactory.createTrainer("ABDELOUAHED", Team.MYSTIC, pokedexFactory);
-        pokemonTrainer.getPokedex().addPokemon(pokemon);
-        assertEquals("ABDELOUAHED", pokemonTrainer.getName());
-        assertEquals(Team.MYSTIC, pokemonTrainer.getTeam());
-        assertNotNull(pokemonTrainer.getPokedex());
-        assertEquals(0, pokemonTrainer.getPokedex().size());
+        IPokedexFactory pokedexFactory = Mockito.mock(IPokedexFactory.class);
+        Team mystic = Team.MYSTIC;
+        Pokedex pokedex = Mockito.mock(Pokedex.class);
+        PokemonTrainer pokemonTrainer = new PokemonTrainer("Arcanine",mystic,pokedex);
+
+
+        Mockito.doReturn(pokemonTrainer).when(this.pokemonTrainerFactory).createTrainer("Arcanine",mystic,pokedexFactory);
+
+
+        //use of AssertJ in Junit5
+        assertThat(this.pokemonTrainerFactory.createTrainer("Arcanine",mystic,pokedexFactory).getClass()).isEqualTo(pokemonTrainer.getClass());
+        assertThat(this.pokemonTrainerFactory.createTrainer("Arcanine",mystic,pokedexFactory).getName()).isEqualTo("Arcanine");
+        assertThat(this.pokemonTrainerFactory.createTrainer("Arcanine",mystic,pokedexFactory).getTeam()).isEqualTo(mystic);
+        assertThat(this.pokemonTrainerFactory.createTrainer("Arcanine",mystic,pokedexFactory).getPokedex().getClass()).isEqualTo(pokedex.getClass());
+        assertThat(this.pokemonTrainerFactory.createTrainer("Arcanine",mystic,pokedexFactory).getPokedex().size()).isEqualTo(pokedex.size());
+
     }
 }

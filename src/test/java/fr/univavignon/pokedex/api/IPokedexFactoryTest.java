@@ -1,36 +1,33 @@
 package fr.univavignon.pokedex.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.mockito.Mockito;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class IPokedexFactoryTest {
 
-    IPokedexFactory pokedexFactory = mock(IPokedexFactory.class);
+    private IPokedexFactory pokedexFactory;
 
-    IPokemonMetadataProvider metadataProvider =  mock(IPokemonMetadataProvider.class);
+    @Before
+    public void setUp(){
+        this.pokedexFactory = new PokedexFactory();
 
-    IPokemonFactory pokemonFactory = mock(IPokemonFactory.class);
-    @Test
-    public void TestcreationPokedex() {
-        when(pokedexFactory.createPokedex(any(), any())).thenAnswer(new Answer<IPokedex>() {
-
-            public IPokedex answer(InvocationOnMock invocation) {
-                IPokedex pokedex = mock(IPokedex.class);
-                when(pokedex.size()).thenReturn(0);
-                return pokedex;
-            }
-        });
-
-        IPokedex pokedex =  pokedexFactory.createPokedex(metadataProvider, pokemonFactory);
-
-        assertEquals(0, pokedex.size());
     }
 
+    @Test
+    @Tag("Pokedex")
+    @DisplayName("Creates a new pokedex instance using the given")
+    public void CreatePokedexTest(){
+
+        IPokemonMetadataProvider pokemonMetadataProvider= Mockito.mock(IPokemonMetadataProvider.class);
+        IPokemonFactory pokemonFactory = Mockito.mock(IPokemonFactory.class);
+
+        //use of AssertJ in Junit5
+        assertThat(pokedexFactory.createPokedex(pokemonMetadataProvider,pokemonFactory).getClass()).isEqualTo(Pokedex.class);
+
+    }
 }

@@ -1,70 +1,140 @@
 package fr.univavignon.pokedex.api;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.assertj.core.api.Assertions;
+import org.junit.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 public class IPokedexTest {
-
-    private IPokedex pokedex;
-    private List<Pokemon> pokemonList;
+    private Pokedex pokedex;
+    private List<Pokemon> pokemons;
+    private Pokemon bulbizarre;
+    private Pokemon aquali;
 
     @Before
-    public void setUp() throws PokedexException {
+    public void setUp(){
         pokedex = new Pokedex();
-        pokemonList = new ArrayList<>();
-        Pokemon pokemon1 = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56);
-        Pokemon pokemon2 = new Pokemon(133, "Aquali", 186, 168, 260, 2729, 202, 4000, 4, 100);
-        pokemonList.add(pokemon1);
-        pokemonList.add(pokemon2);
+        pokemons = new ArrayList<>();
+
+        //pokemons.add(new Pokemon(0,"Bulbizarre",126,126,90,613,64,4000,4,56.0));
+        //pokemons.add(new Pokemon(133,"Aquali",186,186,260,2729,202,5000,4,100.0));
+
+        bulbizarre = new Pokemon(0,"Bulbizarre",126,126,90,613,64,4000,4,56.0);
+        aquali = new Pokemon(133,"Aquali",186,186,260,2729,202,5000,4,100.0);
+
+        //add bulbizarre & aquali to the list
+        pokedex.addPokemon(bulbizarre);
+        this.pokedex.addPokemon(aquali);
+        pokemons = pokedex.getPokemons();
     }
 
     @Test
-    public void testSize() {
-        for (Pokemon pokemon : pokemonList) {
-            pokedex.addPokemon(pokemon);
-        }
-        assertEquals(2, pokedex.size());
+    @Tag("Pokedex")
+    @DisplayName("Returns the number of pokemon this pokedex contains")
+    public void sizeTest(){
+
+
+        //use of AssertJ in Junit5
+        assertThat(pokemons.size()).isEqualTo(2);
     }
 
     @Test
-    public void testAddPokemon() {
-        for (Pokemon pokemon : pokemonList) {
-            pokedex.addPokemon(pokemon);
-        }
-        assertEquals(2, pokedex.size());
+    @Tag("Pokedex")
+    @DisplayName("Locates the pokemon identified by the given <tt>id</tt>")
+    public void addPokemonTest() {
+
+        Pokemon newPokemon = new Pokemon(133, "Aquali", 186, 186, 260, 2729, 202, 5000, 4, 100.0);
+
+        //assertThat(this.pokedex.addPokemon(newPokemon)).isEqualTo(newPokemon.getIndex());
+        assertThat(this.pokedex.addPokemon(newPokemon)).isEqualTo(pokemons.size());
     }
+
+
     @Test
-    public void testGetPokemon() throws PokedexException {
-        for (Pokemon pokemon : pokemonList) {
-            pokedex.addPokemon(pokemon);
-        }
-        Pokemon retrievedPokemon = pokedex.getPokemon(0);
-        assertNotNull(retrievedPokemon);
-        assertEquals(0, retrievedPokemon.getIndex());
+    @Tag("Pokedex")
+    @DisplayName("Returns an unmodifiable list of all pokemons this pokedex contains")
+    public void getPokemonTest() throws PokedexException {
+
+
+        int aqualiIndex = 1, bulbizarreIndex = 0, firstInvalidIndex = 170, secondInvalidIndex = -20;
+
+        assertThat(this.pokedex.getPokemon(aqualiIndex)).isEqualTo(aquali);
+        assertThat(this.pokedex.getPokemon(bulbizarreIndex)).isEqualTo(bulbizarre);
+        assertThat(this.pokedex.getPokemon(aqualiIndex).getName()).isEqualTo(aquali.getName());
+        assertThat(this.pokedex.getPokemon(bulbizarreIndex).getAttack()).isEqualTo(bulbizarre.getAttack());
+        assertThat(this.pokedex.getPokemon(aqualiIndex).getDefense()).isEqualTo(aquali.getDefense());
+        assertThat(this.pokedex.getPokemon(bulbizarreIndex).getStamina()).isEqualTo(bulbizarre.getStamina());
+
+        //Use of AssertThat in JUnit5
+        Assertions.assertThatThrownBy(() -> this.pokedex.getPokemon(firstInvalidIndex)).isInstanceOf(PokedexException.class);
+        Assertions.assertThatThrownBy(() -> this.pokedex.getPokemon(secondInvalidIndex)).isInstanceOf(PokedexException.class);
+
+    }
+
+
+    @Test
+    @Tag("Pokedex")
+    @DisplayName("Returns an unmodifiable list of all pokemons this pokedex contains")
+    public void getPokemonsTest(){
+
+        List<Pokemon> TestPokemonsList = Collections.unmodifiableList(this.pokemons);
+
+        //Use of AssertJ in JUnit5
+        assertThat(this.pokedex.getPokemons().getClass()).isEqualTo(TestPokemonsList.getClass());
+        assertThat(this.pokedex.getPokemons().size()).isEqualTo(TestPokemonsList.size());
+        assertThat(this.pokedex.getPokemons().get(0)).isEqualTo(TestPokemonsList.get(0));
+        assertThat(this.pokedex.getPokemons().get(1)).isEqualTo(TestPokemonsList.get(1));
+
+    }
+
+
+    @Test
+    @Tag("Pokedex")
+    @DisplayName("Returns an unmodifiable list of all pokemons this pokedex contains")
+    public void getPokemonsOrdered(){
+
+        PokemonComparators nComparator = PokemonComparators.NAME;
+        PokemonComparators iComparator = PokemonComparators.INDEX;
+        PokemonComparators cpComparator = PokemonComparators.CP;
+
+        List<Pokemon> nPokemonsOrdered = new ArrayList<>(this.pokemons);
+        nPokemonsOrdered.sort(nComparator);
+
+        List<Pokemon> iPokemonsOrdered = new ArrayList<>(this.pokemons);
+        iPokemonsOrdered.sort(iComparator);
+
+        List<Pokemon> cpPokemonsOrdered = new ArrayList<>(this.pokemons);
+        cpPokemonsOrdered.sort(cpComparator);
+
+        List<Pokemon> edTestPokemonsList = Collections.unmodifiableList(new ArrayList<>());
+
+        //Use of AssertJ in JUnit5
+        assertThat(this.pokedex.getPokemons(nComparator).getClass()).isEqualTo(edTestPokemonsList.getClass());
+        assertThat(this.pokedex.getPokemons(iComparator).size()).isEqualTo(iPokemonsOrdered.size());
+        assertThat(this.pokedex.getPokemons(nComparator).get(0)).isEqualTo(aquali);
+        assertThat(this.pokedex.getPokemons(iComparator).get(0)).isEqualTo(bulbizarre);
+        assertThat(this.pokedex.getPokemons(cpComparator).get(0)).isEqualTo(bulbizarre);
     }
 
     @Test
-    public void testGetPokemons() {
-        for (Pokemon pokemon : pokemonList) {
-            pokedex.addPokemon(pokemon);
-        }
-        List<Pokemon> retrievedPokemons = pokedex.getPokemons();
-        assertEquals(pokemonList, retrievedPokemons);
+    @Tag("Pokedex")
+    @DisplayName("")
+    public void canCreatePokemonTest(){
+
+        assertThat(pokedex.createPokemon(133, 2729, 202, 5000, 4).getName()).isEqualTo(aquali.getName());
     }
 
     @Test
-    public void testGetPokemonsWithComparator() {
-        for (Pokemon pokemon : pokemonList) {
-            pokedex.addPokemon(pokemon);
-        }
-        List<Pokemon> retrievedPokemons = pokedex.getPokemons(Comparator.comparingInt(PokemonMetadata::getIndex));
-        assertEquals(pokemonList, retrievedPokemons);
+    @Tag("Pokedex")
+    @DisplayName("")
+    public void getPokemonMetadataTest() throws PokedexException {
+
+        assertThrows(PokedexException.class, () -> pokedex.getPokemonMetadata(-1));
+        assertThat(pokedex.getPokemonMetadata(133).getName()).isEqualTo(aquali.getName());
+
     }
 }

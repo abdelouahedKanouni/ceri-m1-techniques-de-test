@@ -1,36 +1,43 @@
 package fr.univavignon.pokedex.api;
 
+import org.junit.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.mockito.Mockito;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-
+import static org.assertj.core.api.Assertions.*;
 public class IPokemonMetadataProviderTest {
-    private IPokemonMetadataProvider iPokemonMetadataProvider;
+    private IPokemonMetadataProvider metadataProvider;
+    private PokemonMetadata bulbizarre;
+    private PokemonMetadata aquali;
 
 
-    public void setUp() {
-        // Création d'une instance réelle de PokemonMetadataProviderImpl
-        this.iPokemonMetadataProvider = new PokemonMetadataProvider();
+    @Before
+    public void setUp(){
+
+        this.metadataProvider = new PokemonMetadataProvider();
+        this.bulbizarre = new PokemonMetadata(0, "Bulbizarre", 126, 126, 90);
+        this.aquali = new PokemonMetadata(133, "Aquali", 186, 168, 260);
+
     }
 
     @Test
-    public void getPokemonMetadataBulbasaurTest() throws PokedexException {
-        // Vérification des informations récupérées pour Bulbizarre
-        PokemonMetadata pokemonMetadata = this.iPokemonMetadataProvider.getPokemonMetadata(0);
-        assertEquals("Bulbasaur", pokemonMetadata.getName());
-        assertEquals(126, pokemonMetadata.getAttack());
-        assertEquals(126, pokemonMetadata.getDefense());
-        assertEquals(90, pokemonMetadata.getStamina());
-    }
+    @Tag("Pokémons")
+    @DisplayName("Retrieves and returns the metadata for the pokemon")
+    public void getPokemonMetadata() throws PokedexException {
 
-    @Test
-    public void getPokemonMetadataPikachuTest() throws PokedexException {
-        PokemonMetadata pokemonMetadata = this.iPokemonMetadataProvider.getPokemonMetadata(25);
-        assertEquals("Pikachu", pokemonMetadata.getName());
-        assertEquals(112, pokemonMetadata.getAttack());
-        assertEquals(101, pokemonMetadata.getDefense());
-        assertEquals(70, pokemonMetadata.getStamina());
-    }
+        int bulbizarreIndex = 0, aqualiIndex = 133, firstInvalidIndex = -4, secondInvalidIndex = 160;
 
+
+        //use of AssertJ in Junit5
+        assertThat(this.bulbizarre.getIndex()).isEqualTo(metadataProvider.getPokemonMetadata(bulbizarreIndex).getIndex());
+        assertThat(this.aquali.getDefense()).isEqualTo(metadataProvider.getPokemonMetadata(aqualiIndex).getDefense());
+
+        Throwable thrownException = catchThrowable(() -> metadataProvider.getPokemonMetadata(firstInvalidIndex));
+        assertThat(thrownException).isInstanceOf(PokedexException.class);
+
+        Throwable thrownException2 = catchThrowable(() -> metadataProvider.getPokemonMetadata(secondInvalidIndex));
+        assertThat(thrownException2).isInstanceOf(PokedexException.class);
+
+    }
 }
