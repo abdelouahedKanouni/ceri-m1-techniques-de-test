@@ -1,6 +1,5 @@
 version: 2.1
 
-
 orbs:
   maven: circleci/maven@1.4.1
   codecov: codecov/codecov@4.0.1
@@ -23,6 +22,7 @@ jobs:
       - run:
           name: Upload Coverage Report
           command: bash <(curl -s https://codecov.io/bash)
+
   docs:
     docker:
       - image: cimg/base:2021.04
@@ -43,24 +43,23 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: docs
-    docs-deploy:
-      docker:
-        - image: node:8.10.0
-      steps:
-        - checkout
-        - attach_workspace:
-            at: docs/
-        - run:
-            name: Install and configure dependencies
-            command: |
-              npm install -g --silent gh-pages@2.0.1
-              git config user.email "abdelouahed.kanouni@alumni.univ-avignon.fr"
-        - add_ssh_keys:
-            fingerprints:
-              - "1cpd+vkCBiGTwZnsoOXWthKp02zoYfVt4nc6sA+NEWQ"
-        - run:
-            name: Deploy docs to gh-pages branch
-            command: gh-pages --dist docs/
+      - docs-deploy:
+          docker:
+            - image: node:8.10.0
+          steps:
+            - attach_workspace:
+                at: docs/
+            - run:
+                name: Install and configure dependencies
+                command: |
+                  npm install -g --silent gh-pages@2.0.1
+                  git config user.email "abdelouahed.kanouni@alumni.univ-avignon.fr"
+            - add_ssh_keys:
+                fingerprints:
+                  - "1cpd+vkCBiGTwZnsoOXWthKp02zoYfVt4nc6sA+NEWQ"
+            - run:
+                name: Deploy docs to gh-pages branch
+                command: gh-pages --dist docs/
 
 workflows: # Définition des workflows
   version: 2
@@ -69,9 +68,6 @@ workflows: # Définition des workflows
       - build
   maven_test:
     jobs:
-      - docs-deploy:
-            requires:
-              - build-and-test
       - build:
           filters:
             branches:
