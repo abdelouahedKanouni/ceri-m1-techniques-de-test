@@ -11,4 +11,4 @@
 # Codecov
 [![codecov](https://codecov.io/gh/abdelouahedKanouni/ceri-m1-techniques-de-test/branch/main/graph/badge.svg?token=3Z3Z3Z3Z3Z)](https://codecov.io/gh/abdelouahedKanouni/ceri-m1-techniques-de-test)
 # Checkstyle
-![Checkstyle](https://img.shields.io/badge/Checkstyle-Passed-brightgreen)
+![Checkstyle](target/site/badges/checkstyle-result.svg)
