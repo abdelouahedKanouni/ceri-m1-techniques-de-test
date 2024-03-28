@@ -7,7 +7,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:17-ea-buster-node-browsers-legacy
 
     steps:
       - checkout  # Récupère le code source du dépôt
