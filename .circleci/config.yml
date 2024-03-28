@@ -22,27 +22,10 @@ jobs:
       - run:
           name: Upload Coverage Report
           command: bash <(curl -s https://codecov.io/bash)
-
-  docs:
-    docker:
-      - image: cimg/base:2021.04
-    steps:
-      - checkout
-      - run:
-          name: install1
-          command: sudo add-apt-repository ppa:openjdk-r/ppa
-      - run:
-          name: install2
-          command: sudo apt-get update
-      - run:
-          name: install3
-          command: sudo apt-get install openjdk-11-jdk-headless -y
       - run:
           name: Build-docs
           command: javadoc src/main/java/fr/univavignon/pokedex/api/* -d docs
-      - persist_to_workspace:
-          root: .
-          paths: docs
+
 
   docs-deploy:
     docker:
@@ -63,20 +46,16 @@ jobs:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dist docs/
 
-workflows: # Définition des workflows
+workflows:
   version: 2
-  upload-to-codecov:
+  build_and_deploy:
     jobs:
-      - build
-  maven_test:
-    jobs:
-      - build
-      - docs
+      - build:
+          filters:
+            branches:
+              only:
+                - master
       - docs-deploy:
-            requires:
-                - build
-                - docs
-            filters:
-              branches:
-                only: master
+          requires:
+            - build
 
