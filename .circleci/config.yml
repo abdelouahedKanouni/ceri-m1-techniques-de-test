@@ -43,23 +43,25 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: docs
-      - docs-deploy:
-          docker:
-            - image: node:8.10.0
-          steps:
-            - attach_workspace:
-                at: docs/
-            - run:
-                name: Install and configure dependencies
-                command: |
-                  npm install -g --silent gh-pages@2.0.1
-                  git config user.email "abdelouahed.kanouni@alumni.univ-avignon.fr"
-            - add_ssh_keys:
-                fingerprints:
-                  - "1cpd+vkCBiGTwZnsoOXWthKp02zoYfVt4nc6sA+NEWQ"
-            - run:
-                name: Deploy docs to gh-pages branch
-                command: gh-pages --dist docs/
+
+  docs-deploy:
+    docker:
+      - image: node:8.10.0
+    steps:
+      - attach_workspace:
+          at: docs/
+      - run:
+          name: Install and configure dependencies
+          command: |
+            npm install -g --silent gh-pages@2.0.1
+            git config user.email "abdelouahed.kanouni@alumni.univ-avignon.fr"
+            git config user.name "Abdelouahed Kanouni"
+      - add_ssh_keys:
+          fingerprints:
+            - "1cpd+vkCBiGTwZnsoOXWthKp02zoYfVt4nc6sA+NEWQ"
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages --dist docs/
 
 workflows: # Définition des workflows
   version: 2
@@ -69,6 +71,12 @@ workflows: # Définition des workflows
   maven_test:
     jobs:
       - build:
-          filters:
-            branches:
-              only: master
+      - docs:
+      - docs-deploy:
+            requires:
+                - build
+                - docs
+            filters:
+              branches:
+                only: master
+
