@@ -58,7 +58,7 @@ jobs:
             git config user.name "Abdelouahed Kanouni"
       - add_ssh_keys:
           fingerprints:
-            - "1cpd+vkCBiGTwZnsoOXWthKp02zoYfVt4nc6sA+NEWQ"
+            - "SHA256:H81dl8pLM2FgZS3w58IIOYReWLI7p+MYbYr9/sieuAQ"
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dist docs/
