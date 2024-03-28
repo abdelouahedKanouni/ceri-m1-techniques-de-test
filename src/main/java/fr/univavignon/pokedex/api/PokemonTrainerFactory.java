@@ -1,5 +1,12 @@
 package fr.univavignon.pokedex.api;
 
+
+/**
+ * implementation of the IPokemonTrainerFactory interface.
+ * @see IPokemonTrainerFactory
+
+ */
+
 public class PokemonTrainerFactory implements IPokemonTrainerFactory{
     private IPokemonMetadataProvider metadataProvider;
     private IPokemonFactory pokemonFactory;
