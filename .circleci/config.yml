@@ -32,9 +32,6 @@ jobs:
     steps:
       - attach_workspace:
           at: docs/
-      - add_ssh_keys:
-          fingerprints:
-            - "s+/GlsDiW4UDyafwtpfKeOF19/C8rW3X1Bi4ZKvIVjI"
       - run:
           name: Install and configure dependencies
           command: |
@@ -44,6 +41,9 @@ jobs:
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dist docs/
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:s+/GlsDiW4UDyafwtpfKeOF19/C8rW3X1Bi4ZKvIVjI"
 
 workflows:
   version: 2
