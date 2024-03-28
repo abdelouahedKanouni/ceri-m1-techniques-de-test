@@ -38,7 +38,7 @@ jobs:
           command: |
             npm install -g --silent gh-pages@2.0.1
             git config user.email "abdelouahed.kanouni@alumni.univ-avignon.fr"
-            git config user.name "Abdelouahed Kanouni"
+            git config user.name "abdelouahedKanouni"
       - add_ssh_keys:
           fingerprints:
             - "SHA256:H81dl8pLM2FgZS3w58IIOYReWLI7p+MYbYr9/sieuAQ"
