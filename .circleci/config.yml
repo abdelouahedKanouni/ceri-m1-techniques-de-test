@@ -70,8 +70,8 @@ workflows: # Définition des workflows
       - build
   maven_test:
     jobs:
-      - build:
-      - docs:
+      - build
+      - docs
       - docs-deploy:
             requires:
                 - build
