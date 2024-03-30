@@ -28,7 +28,7 @@ jobs:
       - persist_to_workspace:
           root: docs
           paths:
-            - docs/
+            - .
 
   docs-deploy:
     docker:
