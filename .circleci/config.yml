@@ -24,7 +24,7 @@ jobs:
           command: bash <(curl -s https://codecov.io/bash)
       - run:
           name: Build-docs
-          command: mvn javadoc src/main/java/fr/univavignon/pokedex/api/* -d docs
+          command: javadoc src/main/java/fr/univavignon/pokedex/api/* -d docs
       - persist_to_workspace:
           root: docs
           paths:
