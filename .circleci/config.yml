@@ -48,7 +48,7 @@ jobs:
           command: gh-pages --dist docs/
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:fiPau0otO5SysHSXPSufaQGG4f3MlNhAQDAbtKT3up8"
+            - "Q666f238EUrtzI9esqsejEuDextCB4KHCtyzq0+jPgM"
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dist docs/
