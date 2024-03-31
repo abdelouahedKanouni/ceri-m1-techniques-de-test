@@ -43,12 +43,9 @@ jobs:
             npm install -g --silent gh-pages@2.0.1
             git config user.email "abdelouahed.kanouni@alumni.univ-avignon.fr"
             git config user.name "abdelouahedKanouni"
-      - run:
-          name: Deploy docs to gh-pages branch
-          command: gh-pages --dist docs/
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:ZJKJMghua56Al8eGAlNKhUHvanTM3/Af/7o6vgNdMC8"
+            - "SHA256:Q666f238EUrtzI9esqsejEuDextCB4KHCtyzq0+jPgM"
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dist docs/
