@@ -27,9 +27,14 @@ public class IPokedexTest {
 
     @Test
     public void testSize() {
-        for (Pokemon pokemon : pokemonList) {
-            pokedex.addPokemon(pokemon);
-        }
+        // Ajoutez un Pokémon à la liste
+        pokedex.addPokemon(new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56));
+        // Vérifiez que la taille du Pokédex est égale à 1
+        assertEquals(1, pokedex.size());
+
+        // Ajoutez un autre Pokémon à la liste
+        pokedex.addPokemon(new Pokemon(133, "Aquali", 186, 168, 260, 2729, 202, 4000, 4, 100));
+        // Vérifiez que la taille du Pokédex est égale à 2
         assertEquals(2, pokedex.size());
     }
 

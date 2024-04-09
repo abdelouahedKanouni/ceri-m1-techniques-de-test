@@ -50,9 +50,9 @@ permettront d'assurer une meilleure qualité et fiabilité de l'application.
 ********************************************************************************************************************
 
 # la fin de chaque Tp (les noms de commit)
-* TP1 : TP1
-* TP2 : TP2 (Dés)intégration continue
-* TP3 : TP3 : Pokéunit
-* TP4 : TP4 successfully v5
-* TP5 : FIN TP5 définitivement
-* TP6 : FIN TP6
+* TP1 : TP1                             (b24d733d013860d340bea7acccf84ff80ff31b91)
+* TP2 : TP2 (Dés)intégration continue   (479b8f9ce6143a87599aa0f8607fe0f0db38d889)
+* TP3 : TP3 : Pokéunit                  (7b9e65659a1ddd9541d39489ad4c50cd7673a4e1)
+* TP4 : TP4 successfully v5             (442563c36cc56c289d50570fff3518e8047f6ebd)
+* TP5 : FIN TP5 définitivement          (63fe970eb13b842fab0640ef98950c26146f23ef)
+* TP6 : FIN TP6                         (1b3ba9573d5a7118503f60e91940b38a2a993174)
